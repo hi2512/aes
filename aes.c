@@ -227,7 +227,7 @@ int mygetopt(int argc, char * argv[], char * options) {
         if (isoption(argv[i])) {
             // check if it matches an option
             while (options[y] != '\0') {
-                //printf("matching for %c to %c", argv[i][1], options[y]);
+                // printf("matching for %c to %c", argv[i][1], options[y]);
                 if (argv[i][1] == options[y]) {
                     // found match
                     res = options[y];
@@ -537,6 +537,7 @@ int fillText(unsigned char ** tbuf, FILE * f) {
     return eof;
 }
 
+// funtion to write encrypted text to file
 void writeText(unsigned char ** tbuf, FILE * out) {
     unsigned char buf[16];
     int i, j, count;
@@ -547,7 +548,7 @@ void writeText(unsigned char ** tbuf, FILE * out) {
             count++;
         }
     }
-    printcb(buf);
+    // printcb(buf);
     fwrite(buf, 1, 16, out);
 }
 
@@ -638,7 +639,7 @@ int main(int argc, char * argv[]) {
         case 'k':
             if (opt[5] == 's') {
                 // keysize
-                k256 = strcmp("192", optarg);
+                k256 = strcmp("128", optarg);
             } else {
                 // keyfile
                 keyfile = fopen(optarg, "r");
@@ -658,6 +659,7 @@ int main(int argc, char * argv[]) {
     if (k256) {
         keysize = 240;
     }
+    // get the key and pads if not long enough
     unsigned char * keybuf = (unsigned char *) calloc(1, keysize + 1);
     int c;
     for (i = 0; i < 16; i++) {
@@ -670,7 +672,7 @@ int main(int argc, char * argv[]) {
     fclose(keyfile);
 
     expandKey(keybuf, k256);
-    printKey(keybuf, keysize);
+    // printKey(keybuf, keysize);
 
     unsigned char ** textbuf = (unsigned char **) malloc(sizeof(char *) * 4);
     for (i = 0; i < 4; i++) {
